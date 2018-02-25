@@ -3,8 +3,7 @@
     <textarea
       placeholder="message..."
       maxlength="20000"
-      minlength="1"
-      @keyup.enter="yo"
+      @keydown.enter="submit"
     ></textarea>
   </div>
 </template>
@@ -16,8 +15,28 @@ export default {
     return {}
   },
   methods: {
-    yo: (e) => {
+    submit (e) {
+      if (!e.shiftKey) {
+        e.preventDefault()
+      } else {
+        return
+      }
+
+      let text = e.target.value
       e.target.value = ''
+
+      // If the message body is empty, do not submit
+      if (text.length === 0) {
+        return
+      }
+
+      let message = {
+        who: 'me',
+        time: new Date().getTime(),
+        text
+      }
+
+      this.$store.commit('newMessage', { message })
     }
   }
 }
