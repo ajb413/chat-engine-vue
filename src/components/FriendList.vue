@@ -1,7 +1,13 @@
 <template>
   <div class="friend-list">
-    <friend-list-item></friend-list-item>
-    <friend-list-item></friend-list-item>
+    <div
+      is="friend-list-item"
+      v-for="friend of friends"
+      :key="friend.key"
+      :avatar="friend.avatar"
+      :name="friend.name"
+      :lastMessage="friend.lastMessage"
+    ></div>
   </div>
 </template>
 
@@ -13,7 +19,8 @@ export default {
   name: 'friend-list',
   components: { FriendListItem },
   data () {
-    return {}
+    const friends = this.$store.state.friends
+    return { friends }
   }
 }
 
@@ -24,10 +31,12 @@ export default {
   display: block;
   width: 250px;
   height: 100%;
-  background-color: #314460;
+  background: linear-gradient(141deg, #0c384c 0%, #314460 75%);
   float: left;
   overflow-y: scroll;
   border-radius: 0 0 0 3px;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .friend-list::-webkit-scrollbar {

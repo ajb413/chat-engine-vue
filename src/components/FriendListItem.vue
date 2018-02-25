@@ -11,12 +11,9 @@
 <script>
 export default {
   name: 'friend-list-item',
+  props: ['avatar', 'name', 'lastMessage'],
   data () {
-    return {
-      avatar: 'https://lh3.googleusercontent.com/-nr6r2jf30wY/AAAAAAAAAAI/AAAAAAAAAio/mthZ3J53MWI/s120-p-rw-no/photo.jpg',
-      name: 'Adam Bavosa',
-      lastMessage: "No I can't come to your party tomorrow. I really don't like you so why should I be near you ever?"
-    }
+    return {}
   }
 }
 </script>
@@ -28,6 +25,8 @@ export default {
   padding: 5%;
   box-sizing: border-box;
   border-bottom: solid 1px #CDCDCD;
+  background: linear-gradient(141deg, #314460 0%, #0c384c 75%);
+  cursor: pointer;
 }
 
 .friend-list-item img {
