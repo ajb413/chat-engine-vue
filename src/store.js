@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import TestData from './test-data'
 
 Vue.use(Vuex)
 
@@ -13,7 +14,14 @@ const state = {}
 // mutations must be synchronous and can be recorded by plugins
 // for debugging purposes.
 const mutations = {
-  newMessage (state) {}
+  newMessage (observer, payload) {
+    if (!state.messages) {
+      state.messages = []
+    }
+
+    state.messages.push(payload.message)
+    state.messages.sort((a, b) => { return a.time > b.time })
+  }
 }
 
 // actions are functions that cause side effects and can involve
@@ -21,7 +29,27 @@ const mutations = {
 const actions = {}
 
 // getters are functions
-const getters = {}
+const getters = {
+  getMessages (messages) {
+    if (!Array.isArray(messages)) {
+      return
+    }
+
+    for (let message of messages) {
+      mutations.newMessage(null, { message })
+    }
+  },
+  getFriendsList (friends) {
+    if (!state.friends) {
+      state.friends = []
+    }
+    state.friends = state.friends.concat(friends)
+  }
+}
+
+// Init with past messages + FL from server
+getters.getFriendsList(TestData.friends)
+getters.getMessages(TestData.messages)
 
 // A Vuex instance is created by combining the state, mutations, actions,
 // and getters.
