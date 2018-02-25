@@ -62,6 +62,9 @@ h1 {
   text-align: center;
   background-color: #CDCDCD;
   border-radius: 3px 3px 0 0;
+  -ms-user-select: none;
+  user-select: none;
+  background: linear-gradient(#EDEDED 0%, #CDCDCD 75%);
 }
 
 .body {
