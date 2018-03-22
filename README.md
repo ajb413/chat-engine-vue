@@ -1,9 +1,9 @@
-# PubNub Chat Engine + Vue + IBM Watson
+# PubNub ChatEngine + Vue + AWS Cognitive
 
-> A chat app with vue and PubNub Chat Engine.
+> A chat app with vue and PubNub ChatEngine.
 
 **LATEST: Currently constructing the front end**
-- Next I will integrate Chat Engine
+- Next I will integrate ChatEngine
 - Then I will build PubNub Functions that will access IBM Watsons conversation API to do a realtime chatbot and message enhancements.
 
 ## Build Setup
