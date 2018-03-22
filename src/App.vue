@@ -6,10 +6,10 @@
 
 <script>
 
-import ChatContainer from '@/components/ChatContainer'
-import ChatLog from '@/components/ChatLog'
-import FriendList from '@/components/FriendList'
-import MessageInput from '@/components/MessageInput'
+import ChatContainer from '@/components/ChatContainer';
+import ChatLog from '@/components/ChatLog';
+import FriendList from '@/components/FriendList';
+import MessageInput from '@/components/MessageInput';
 
 export default {
   name: 'App',
@@ -17,15 +17,15 @@ export default {
     ChatContainer,
     ChatLog,
     FriendList,
-    MessageInput
-  }
-}
+    MessageInput,
+  },
+};
 
 </script>
 
 <style>
 body {
-  background-image: url('https://www.pubnub.com/sites/all/themes/pubnub/images/filter-blocks-bg.png')
+  background-image: url('./assets/pubnub-filter-blocks-bg.png');
 }
 
 #app {

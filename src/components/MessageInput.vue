@@ -11,35 +11,37 @@
 <script>
 export default {
   name: 'message-input',
-  data () {
-    return {}
+  data() {
+    return {};
   },
   methods: {
-    submit (e) {
+    submit(e) {
       if (!e.shiftKey) {
-        e.preventDefault()
+        e.preventDefault();
       } else {
-        return
+        return;
       }
 
-      let text = e.target.value
-      e.target.value = ''
+      let text = e.target.value;
+      e.target.value = '';
 
       // If the message body is empty, do not submit
       if (text.length === 0) {
-        return
+        return;
       }
 
       let message = {
-        who: 'me',
         time: new Date().getTime(),
-        text
-      }
+        text,
+      };
 
-      this.$store.commit('newMessage', { message })
-    }
-  }
-}
+      this.$store.dispatch('CHATENGINE_SEND_MESSAGE', {
+        chat: this.$store.state.currentChat,
+        message,
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>

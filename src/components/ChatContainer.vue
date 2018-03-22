@@ -16,21 +16,24 @@
 </template>
 
 <script>
-
-import FriendList from '@/components/FriendList'
-import ChatLog from '@/components/ChatLog'
-import MessageInput from '@/components/MessageInput'
+import FriendList from '@/components/FriendList';
+import ChatLog from '@/components/ChatLog';
+import MessageInput from '@/components/MessageInput';
 
 export default {
   name: 'chat-container',
-  components: { FriendList, ChatLog, MessageInput },
-  data () {
+  components: {
+    FriendList,
+    ChatLog,
+    MessageInput,
+  },
+  data() {
     return {
       msg: 'Welcome to Your Vue.js App',
-      title: 'Coolest Chat App - PubNub Chat Engine and Vue'
-    }
-  }
-}
+      title: 'Coolest Chat App - PubNub Chat Engine and Vue',
+    };
+  },
+};
 
 </script>
 

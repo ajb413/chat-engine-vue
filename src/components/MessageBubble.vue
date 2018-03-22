@@ -9,10 +9,10 @@
 export default {
   name: 'message-bubble',
   props: ['time', 'text', 'who'],
-  data () {
-    return {}
-  }
-}
+  data() {
+    return {};
+  },
+};
 </script>
 
 <style scoped>

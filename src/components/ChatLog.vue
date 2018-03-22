@@ -1,39 +1,38 @@
 <template>
   <div class="chat-log">
-    <div is="message-bubble"
-      v-for="message of messages"
+    <message-bubble
+      v-for="message in messages"
       :key="message.key"
       :time="message.time"
       :text="message.text"
       :who="message.who"
-    ></div>
+    ></message-bubble>
   </div>
 </template>
 
 <script>
+import MessageBubble from '@/components/MessageBubble';
 
-import MessageBubble from '@/components/MessageBubble'
-
-function scrollBottom () {
-  this.$el.scrollTo(0, this.$el.scrollHeight)
+/**
+ * Auto scrolls the chat log to the bottom when a new message is received.
+ */
+function scrollBottom() {
+  this.$el.scrollTo(0, this.$el.scrollHeight);
 }
 
 export default {
-  created () {
-    this.$nextTick(scrollBottom)
-  },
   name: 'chat-log',
-  components: { MessageBubble },
-  data () {
-    const messages = this.$store.state.messages
-    return { messages }
+  components: {MessageBubble},
+  computed: {
+    messages() {
+      this.$nextTick(scrollBottom);
+      return this.$store.state.chatMessages[this.$store.state.currentChat];
+    },
   },
-  watch: {
-    messages () {
-      this.$nextTick(scrollBottom)
-    }
-  }
-}
+  created() {
+    this.$nextTick(scrollBottom);
+  },
+};
 </script>
 
 <style scoped>

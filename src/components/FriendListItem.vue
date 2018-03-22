@@ -1,6 +1,6 @@
 <template>
-  <div class="friend-list-item">
-    <img :src="avatar" />
+  <div class="friend-list-item" @click="onFocus">
+    <img :src="avatarSrc" />
     <div class="text">
       <span class="name">{{ name }}</span>
       <span class="lastMessage">{{ lastMessage }}</span>
@@ -9,13 +9,47 @@
 </template>
 
 <script>
+import defaultProfileImg from '@/assets/profile.png';
+import globalProfileImg from '@/assets/pn.png';
+
 export default {
   name: 'friend-list-item',
-  props: ['avatar', 'name', 'lastMessage'],
-  data () {
-    return {}
-  }
-}
+  props: {
+    name: {},
+    avatar: {
+      default: defaultProfileImg,
+    },
+    chat: '',
+  },
+  data() {
+    return {};
+  },
+  methods: {
+    onFocus(event) {
+      this.$store.commit('setCurrentChat', {chatKey: this._props.chat});
+    },
+  },
+  computed: {
+    lastMessage() {
+      let messages = this.$store.state.chatMessages[this.chat];
+
+      if (messages && messages.length) {
+        return messages[messages.length-1].text;
+      } else {
+        return '';
+      }
+    },
+    avatarSrc() {
+      if (this.avatar === 'global') {
+        return globalProfileImg;
+      } else if (this.avatar) {
+        return this.avatar;
+      } else {
+        return defaultProfileImg;
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>

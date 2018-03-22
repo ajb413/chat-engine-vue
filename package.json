@@ -11,14 +11,15 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "chat-engine": "^0.8.4",
+    "chat-engine": "^0.9.5",
+    "eslint-config-google": "^0.9.1",
     "vue": "^2.5.2",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
-    "babel-eslint": "^8.2.1",
+    "babel-eslint": "^8.2.2",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-loader": "^7.1.1",
     "babel-plugin-syntax-jsx": "^6.18.0",
@@ -37,7 +38,7 @@
     "eslint-plugin-node": "^5.2.0",
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^3.0.1",
-    "eslint-plugin-vue": "^4.0.0",
+    "eslint-plugin-vue": "^4.3.0",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.4",
     "friendly-errors-webpack-plugin": "^1.6.1",
