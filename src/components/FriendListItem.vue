@@ -19,19 +19,19 @@ export default {
     avatar: {
       default: defaultProfileImg,
     },
-    chat: '',
+    chatKey: '',
   },
   data() {
     return {};
   },
   methods: {
     onFocus(event) {
-      this.$store.commit('setCurrentChat', {chatKey: this._props.chat});
+      this.$store.commit('setCurrentChat', {chatKey: this.chatKey});
     },
   },
   computed: {
     lastMessage() {
-      let messages = this.$store.state.chatMessages[this.chat];
+      let messages = this.$store.state.chatMessages[this.chatKey];
 
       if (messages && messages.length) {
         return messages[messages.length-1].text;

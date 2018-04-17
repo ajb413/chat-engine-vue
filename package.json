@@ -11,9 +11,10 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "chat-engine": "^0.9.5",
+    "chat-engine": "^0.9.10",
     "eslint-config-google": "^0.9.1",
     "vue": "^2.5.2",
+    "vue-chat-engine": "0.0.3",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

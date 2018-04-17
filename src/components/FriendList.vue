@@ -6,7 +6,7 @@
       :name="friend.name"
       :lastMessage="friend.lastMessage"
       :avatar="friend.avatar"
-      :chat="friend.chat"
+      :chatKey="friend.chatKey"
     ></friend-list-item>
     <div class="add-one-one vertical-align" @click="newChat">+</div>
   </div>

@@ -4,33 +4,58 @@ import Vue from 'vue';
 import App from './App';
 import store from './store';
 import VueChatEngine from 'vue-chat-engine';
+import ChatEngineCore from 'chat-engine';
+import DefaultChat from './default-chats';
+
+// Sets the default global and 1:1 chat
+store.commit('setFriends', {
+  friends: DefaultChat.friends,
+});
+
+const pub = '';
+const sub = '';
+
+if (!pub || !sub) {
+  console.error('ChatEngine: PubNub Keys are missing.');
+}
+
+const chatEngine = ChatEngineCore.create({
+  publishKey: pub,
+  subscribeKey: sub,
+}, {
+  globalChannel: store.state.friends[0].chatKey,
+  enableSync: true,
+});
+
 // import ChatEngineSetup from './scripts/ChatEngineSetup';
 
 Vue.config.productionTip = false;
 
-// PubNub Config
-const pnConfig = {
-  publishKey: '',
-  subscribeKey: '',
-};
+/**
+ * Get a new UUID
+ * @return {string} A 4 character UUID for PubNub and to give to friends.
+ */
+function fourCharUUID() {
+  const maxLength = 4;
+  const possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let text = '';
 
-// Chat Engine Config
-const chatEngineConfig = {
-  globalChannel: 'chatengine-vue-demo-global',
-  enableSync: true,
-};
+  for (let i = 0; i < maxLength; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+
+  return text;
+}
+
+const myUuid = fourCharUUID();
 
 const me = {
-  // eslint-disable-next-line
-  avatar: 'https://lh3.googleusercontent.com/-nr6r2jf30wY/AAAAAAAAAAI/AAAAAAAAAio/mthZ3J53MWI/s120-p-rw-no/photo.jpg',
-  name: 'Adam Bavosa',
-  uuid: 'adamb',
-  // eslint-disable-next-line
-  lastMessage: 'No I can\'t come to your party tomorrow. I really don\'t like you so why should I be near you ever?',
+  name: myUuid,
+  uuid: myUuid,
 };
 
 // Chat Engine injected into every component instance
-Vue.use(VueChatEngine, {pnConfig, chatEngineConfig, store});
+Vue.use(VueChatEngine, {chatEngine, store});
 
 /* eslint-disable no-new */
 new Vue({
@@ -41,7 +66,6 @@ new Vue({
   created() {
     const ChatEngine = this.$chatEngine;
     const store = this.$store;
-    const chatKey = 'chatengine-vue-demo-chat';
 
     ChatEngine.connect(me.uuid, me);
 
@@ -50,6 +74,7 @@ new Vue({
      * @param {Object} message Message object from the chat engine message event
      */
     function onMessage(message) {
+      console.log('onMessage', message);
       let messageInDOM = {
         text: message.data.text || '',
         time: message.data.time || 0,
@@ -61,57 +86,49 @@ new Vue({
       if (message.sender.uuid == me.uuid) {
         messageInDOM.who = 'me';
       }
-
-      // store.commit('newMessage', {
-      //   message: messageInDOM,
-      //   chat: chatKey,
-      // });
     }
 
     ChatEngine.on('$.ready', function(data) {
       // store my new user as `me`
       let me = data.me;
-
-      // create a new ChatEngine Chat
-      let myChat = new ChatEngine.Chat(chatKey);
-
-      // when we recieve messages in this chat, render them
-      myChat.on('message', onMessage);
-
-      // when a user comes online, render them in the online list
-      myChat.on('$.online.*', (data) => {
-        // $('#people-list ul').append(peopleTemplate(data.user));
-      });
-
-      // when a user goes offline, remove them from the online list
-      myChat.on('$.offline.*', (data) => {
-        // $('#people-list ul').find('#' + data.user.uuid).remove();
-      });
-
-      // wait for our chat to be connected to the internet
-      myChat.on('$.connected', () => {
-        // search for 15 old `message` events
-        myChat.search({
-          event: 'message',
-          limit: 15,
-        }).on('message', onMessage);
-      });
-
       store.commit('setMe', {me});
 
-      store.commit('newChat', {
-        chatKey: myChat.channel,
-        chatValue: myChat,
-      });
+      ChatEngine.global.search({
+        event: 'message',
+        limit: 6,
+      }).on('message', onMessage);
+
+      ChatEngine.global.key = store.state.friends[0].chatKey;
 
       store.commit('setCurrentChat', {
-        chatKey: myChat.channel,
+        chatKey: ChatEngine.global.key,
       });
 
+      store.state.friends.forEach(function(friend) {
+        if (!store.state.chats[friend.chatKey]) {
+          // create a new ChatEngine Chat
+          let myChat = new ChatEngine.Chat(friend.chatKey);
 
-      // store.dispatch('CHATENGINE_NEW_CHAT', {
-      //   chatKey: 'asdasdasd'
-      // });
+          // when we recieve messages in this chat, render them
+          myChat.on('message', onMessage);
+
+          // when a user comes online, render them in the online list
+          myChat.on('$.online.*', (data) => {
+            // $('#people-list ul').append(peopleTemplate(data.user));
+          });
+
+          // when a user goes offline, remove them from the online list
+          myChat.on('$.offline.*', (data) => {
+            // $('#people-list ul').find('#' + data.user.uuid).remove();
+          });
+
+          myChat.key = friend.chatKey;
+
+          store.commit('newChat', {
+            chat: myChat,
+          });
+        }
+      });
     });
   },
 });

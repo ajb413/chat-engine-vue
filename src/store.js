@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import TestData from './test-data';
 
 Vue.use(Vuex);
 
@@ -25,13 +24,21 @@ const mutations = {
   setCurrentChat(state, {chatKey}) {
     state.currentChat = chatKey;
   },
-  newChat(state, {chatKey, chatValue}) {
-    state.chats[chatKey] = chatValue;
+  setFriends(state, {friends}) {
+    if (!state.friends) {
+      state.friends = [];
+    }
+    state.friends = state.friends.concat(friends);
+  },
+  newChat(state, {chat}) {
+    console.log(chat.key);
+    state.chats[chat.key] = chat;
   },
   CHATENGINE_message(state, {event, sender, chat, data}) {
-    let channel = chat.config.channel;
-    if (!state.chatMessages[channel]) {
-      Vue.set(state.chatMessages, channel, []);
+    let key = chat.key || chat.chat.key;
+
+    if (!state.chatMessages[key]) {
+      Vue.set(state.chatMessages, key, []);
     }
 
     let myUuid = this.state.me.uuid;
@@ -43,8 +50,8 @@ const mutations = {
       message.who = 'them';
     }
 
-    state.chatMessages[channel].push(message);
-    state.chatMessages[channel].sort((msg1, msg2) => {
+    state.chatMessages[key].push(message);
+    state.chatMessages[key].sort((msg1, msg2) => {
       return msg1.time > msg2.time;
     });
   },
@@ -53,19 +60,9 @@ const mutations = {
 // actions are functions that cause side effects and can involve
 // asynchronous operations.
 const actions = {
-  CHATENGINE_SEND_MESSAGE(context, {chat, message}) {
+  sendMessage(context, {chat, message}) {
     // emit the `message` event to everyone in the Chat
     context.state.chats[chat].emit('message', message);
-  },
-  CHATENGINE_NEW_CHAT(context, {chatKey}) {
-    // create a new chat and put it in the store
-    debugger;
-    let myChat = new ChatEngine.Chat(chatKey);
-
-    store.commit('newChat', {
-      chatKey: chatKey,
-      chatValue: myChat,
-    });
   },
 };
 
@@ -82,27 +79,14 @@ const getters = {
       });
     }
   },
-  getFriendsList(friends) {
-    if (!state.friends) {
-      state.friends = [];
-    }
-    state.friends = state.friends.concat(friends);
-  },
   getCurrentChat(state) {
-    // debugger;
     return state.currentChat;
   },
   getMessages(state) {
-    // debugger;
     return state.chatMessages[state.currentChat];
   },
-  // getMessages: (state) => state.chatMessages[state.currentChat],
   getChat: (state) => state.chats[state.currentChat],
 };
-
-// Init with past messages + FL from server
-getters.getFriendsList(TestData.friends);
-// getters.getMessages(TestData.messages);
 
 // A Vuex instance is created by combining the state, mutations, actions,
 // and getters.

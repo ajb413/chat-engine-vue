@@ -35,7 +35,7 @@ export default {
         text,
       };
 
-      this.$store.dispatch('CHATENGINE_SEND_MESSAGE', {
+      this.$store.dispatch('sendMessage', {
         chat: this.$store.state.currentChat,
         message,
       });
