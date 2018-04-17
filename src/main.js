@@ -7,11 +7,12 @@ import VueChatEngine from 'vue-chat-engine';
 import ChatEngineCore from 'chat-engine';
 import DefaultChat from './default-chats';
 
-// Sets the default global and 1:1 chat
+// Sets the default global and 1:1 chats
 store.commit('setFriends', {
   friends: DefaultChat.friends,
 });
 
+// Init ChatEngine with PubNub
 const pub = '';
 const sub = '';
 
@@ -26,8 +27,6 @@ const chatEngine = ChatEngineCore.create({
   globalChannel: store.state.friends[0].chatKey,
   enableSync: true,
 });
-
-// import ChatEngineSetup from './scripts/ChatEngineSetup';
 
 Vue.config.productionTip = false;
 
@@ -104,6 +103,7 @@ new Vue({
         chatKey: ChatEngine.global.key,
       });
 
+      // Create a new chat for each user in the friends list
       store.state.friends.forEach(function(friend) {
         if (!store.state.chats[friend.chatKey]) {
           // create a new ChatEngine Chat
