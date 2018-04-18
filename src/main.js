@@ -13,8 +13,8 @@ store.commit('setFriends', {
 });
 
 // Init ChatEngine with PubNub
-const pub = '';
-const sub = '';
+const pub = 'pub-c-bc85cb90-3bb6-4b48-9f2e-73e7a60a7be5';
+const sub = 'sub-c-eb9ac3fa-248e-11e8-bb29-5a43d096f02f';
 
 if (!pub || !sub) {
   console.error('ChatEngine: PubNub Keys are missing.');
@@ -36,7 +36,7 @@ Vue.config.productionTip = false;
  */
 function fourCharUUID() {
   const maxLength = 4;
-  const possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  const possible = 'abcdef0123456789';
   let text = '';
 
   for (let i = 0; i < maxLength; i++) {
