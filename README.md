@@ -6,8 +6,8 @@
 - ~~Integrate ChatEngine with test data~~
 - ~~Build ChatEngine plugin for Vue~~
 - ~~Architect and implement 1:1 chat~~
-- Display the user's ID in the UI so they can make 1:1 chats with other users
-- Add functionality for creating new chats
+- ~~Display the user's ID in the UI so they can make 1:1 chats with other users~~
+- ~~Add functionality for creating new chats~~
 - Implement the [AWS Cognitive blocks](https://www.pubnub.com/blog/making-chat-apps-smarter-with-amazon-machine-learning-services/) from the [catalog](https://www.pubnub.com/docs/blocks-catalog)
 - Implement a ChatBot in the Demo
 
