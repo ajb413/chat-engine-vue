@@ -40,7 +40,7 @@ export default {
   display: block;
   height: inherit;
   width: 100%;
-  padding: 4%;
+  padding: 2% 4%;
   box-sizing: border-box;
   overflow-y: scroll;
 }

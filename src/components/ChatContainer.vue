@@ -1,7 +1,7 @@
 <template>
   <div class="chat-container">
     <div class="heading">
-      <h1>{{ title }}</h1>
+      <h1>{{ title + uuid }}</h1>
     </div>
     <div class="body">
       <friend-list></friend-list>
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
 import FriendList from '@/components/FriendList';
 import ChatLog from '@/components/ChatLog';
 import MessageInput from '@/components/MessageInput';
@@ -30,8 +31,13 @@ export default {
   data() {
     return {
       msg: 'Welcome to Your Vue.js App',
-      title: 'Coolest Chat App - PubNub Chat Engine and Vue',
+      title: 'PubNub Chat Engine and Vue - User: ',
     };
+  },
+  computed: {
+    ...mapGetters({
+      uuid: 'getMyUuid',
+    }),
   },
 };
 
@@ -53,7 +59,7 @@ h1 {
   width: 100%;
   height: 550px;
   margin: auto;
-  background-color: #F2F2F2;
+  background-color: #FFFFFF;
   border: solid 1px #BFBFBF;
   border-radius: 3px;
 }

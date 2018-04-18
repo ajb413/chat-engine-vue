@@ -28,10 +28,15 @@ const mutations = {
     if (!state.friends) {
       state.friends = [];
     }
-    state.friends = state.friends.concat(friends);
+
+    for (let friend of friends) {
+      state.friends.push(friend);
+    }
   },
   newChat(state, {chat}) {
-    console.log(chat.key);
+    if (!chat.key) {
+      throw Error('No chat.key defined on the new Chatengine chat Object');
+    }
     state.chats[chat.key] = chat;
   },
   CHATENGINE_message(state, {event, sender, chat, data}) {
@@ -41,14 +46,8 @@ const mutations = {
       Vue.set(state.chatMessages, key, []);
     }
 
-    let myUuid = this.state.me.uuid;
     let message = data;
-
-    if (sender.uuid === myUuid) {
-      message.who = 'me';
-    } else {
-      message.who = 'them';
-    }
+    message.who = sender.uuid;
 
     state.chatMessages[key].push(message);
     state.chatMessages[key].sort((msg1, msg2) => {
@@ -86,6 +85,8 @@ const getters = {
     return state.chatMessages[state.currentChat];
   },
   getChat: (state) => state.chats[state.currentChat],
+  getMyUuid: (state) => state.me.uuid,
+  getFriends: (state) => state.friends,
 };
 
 // A Vuex instance is created by combining the state, mutations, actions,

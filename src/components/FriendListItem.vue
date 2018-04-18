@@ -1,5 +1,8 @@
 <template>
-  <div class="friend-list-item" @click="onFocus">
+  <div
+    class="friend-list-item"
+    :class="selected"
+    @click="onFocus">
     <img :src="avatarSrc" />
     <div class="text">
       <span class="name">{{ name }}</span>
@@ -48,6 +51,9 @@ export default {
         return defaultProfileImg;
       }
     },
+    selected() {
+      return this.$store.state.currentChat === this.chatKey ? 'selected' : '';
+    },
   },
 };
 </script>
@@ -59,8 +65,12 @@ export default {
   padding: 5%;
   box-sizing: border-box;
   border-bottom: solid 1px #CDCDCD;
-  background: linear-gradient(141deg, #314460 0%, #0c384c 75%);
+  background: linear-gradient(141deg, #505D74 0%, #15223A 75%);
   cursor: pointer;
+}
+
+.selected {
+  background: #717C8F;
 }
 
 .friend-list-item img {

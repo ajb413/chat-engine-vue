@@ -63,5 +63,6 @@ textarea {
   font-size: 14px;
   border: solid 1px #AAAAAA;
   border-radius: 3px;
+  font-family: Helvetica;
 }
 </style>

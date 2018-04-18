@@ -68,24 +68,6 @@ new Vue({
 
     ChatEngine.connect(me.uuid, me);
 
-    /**
-     * Event handler for new messages in the default chat
-     * @param {Object} message Message object from the chat engine message event
-     */
-    function onMessage(message) {
-      console.log('onMessage', message);
-      let messageInDOM = {
-        text: message.data.text || '',
-        time: message.data.time || 0,
-        who: 'them',
-      };
-
-      // eslint-disable-next-line
-      // if I happened to send the message, use the special template for myself
-      if (message.sender.uuid == me.uuid) {
-        messageInDOM.who = 'me';
-      }
-    }
 
     ChatEngine.on('$.ready', function(data) {
       // store my new user as `me`
@@ -95,7 +77,7 @@ new Vue({
       ChatEngine.global.search({
         event: 'message',
         limit: 6,
-      }).on('message', onMessage);
+      });
 
       ChatEngine.global.key = store.state.friends[0].chatKey;
 
@@ -108,9 +90,6 @@ new Vue({
         if (!store.state.chats[friend.chatKey]) {
           // create a new ChatEngine Chat
           let myChat = new ChatEngine.Chat(friend.chatKey);
-
-          // when we recieve messages in this chat, render them
-          myChat.on('message', onMessage);
 
           // when a user comes online, render them in the online list
           myChat.on('$.online.*', (data) => {
