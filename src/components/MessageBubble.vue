@@ -7,7 +7,7 @@
       class="from"
       :class="isGlobal"
     >{{ who }}</span>
-    <br :class="me">
+    <br :class="me + ' ' + isGlobal">
     <span
       class="message-text"
     >{{ text }}</span>
@@ -80,7 +80,8 @@ export default {
   display: block;
 }
 
-.display-none,
+span.display-none,
+br.display-none,
 .message-bubble.me .from,
 br.me {
   display: none;
