@@ -86,7 +86,17 @@ new Vue({
       });
 
       // Create a new chat for each user in the friends list
-      store.state.friends.forEach(function(friend) {
+      store.state.friends.forEach(function(friend, index) {
+        // Make a private chat key with the Stephen bot
+        if (!friend.chatKey) {
+          let uuids = [friend.uuid, store.state.me.uuid].sort();
+          friend.chatKey = uuids.join('-');
+          store.commit('updateFriendChatKey', {
+            friendIndex: index,
+            chatKey: friend.chatKey,
+          });
+        }
+
         if (!store.state.chats[friend.chatKey]) {
           // create a new ChatEngine Chat
           let myChat = new ChatEngine.Chat(friend.chatKey);

@@ -9,6 +9,7 @@ const state = {
   chats: {},
   chatMessages: {},
   currentChat: '',
+  friends: [],
   me: {},
 };
 
@@ -25,13 +26,14 @@ const mutations = {
     state.currentChat = chatKey;
   },
   setFriends(state, {friends}) {
-    if (!state.friends) {
-      state.friends = [];
-    }
-
     for (let friend of friends) {
       state.friends.push(friend);
     }
+  },
+  updateFriendChatKey(state, {friendIndex, chatKey}) {
+    let obj = state.friends[friendIndex];
+    obj.chatKey = chatKey;
+    Vue.set(state.friends, friendIndex, obj);
   },
   newChat(state, {chat}) {
     if (!chat.key) {
