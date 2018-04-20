@@ -7,12 +7,12 @@
       </div>
     </div>
     <friend-list-item
-      v-for="friend of friends"
-      :key="friend.chatKey"
+      v-for="(friend, index) of friends"
+      :key="index"
+      :index="index"
       :name="friend.name"
       :lastMessage="friend.lastMessage"
       :avatar="friend.avatar"
-      :chatKey="friend.chatKey"
     ></friend-list-item>
   </div>
 </template>
