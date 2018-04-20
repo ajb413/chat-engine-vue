@@ -1,6 +1,7 @@
 <template>
   <div class="message-input">
     <textarea
+      ref="messageInput"
       placeholder="message..."
       maxlength="20000"
       @keydown.enter="submit"
@@ -9,10 +10,23 @@
 </template>
 
 <script>
+import {EventBus} from '../event-bus.js';
+
 export default {
   name: 'message-input',
   data() {
     return {};
+  },
+  created() {
+    const thisComponent = this;
+
+    EventBus.$on('focus-input', (event) => {
+      thisComponent.$refs.messageInput.focus();
+    });
+
+    this.$nextTick(() => {
+      thisComponent.$refs.messageInput.focus();
+    });
   },
   methods: {
     submit(e) {

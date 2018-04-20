@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import {EventBus} from '../event-bus.js';
 import defaultProfileImg from '@/assets/profile.png';
 import globalProfileImg from '@/assets/pn.png';
 
@@ -22,17 +23,21 @@ export default {
     avatar: {
       default: defaultProfileImg,
     },
-    chatKey: '',
+    index: null,
   },
   data() {
     return {};
   },
   methods: {
     onFocus(event) {
+      EventBus.$emit('focus-input', event);
       this.$store.commit('setCurrentChat', {chatKey: this.chatKey});
     },
   },
   computed: {
+    chatKey() {
+      return this.$store.state.friends[this.index].chatKey;
+    },
     lastMessage() {
       let messages = this.$store.state.chatMessages[this.chatKey];
 
