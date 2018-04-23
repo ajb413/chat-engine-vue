@@ -89,8 +89,6 @@ export default {
   display: block;
   width: 36px;
   height: 36px;
-/*  width: 100px;
-  height: 100px;*/
   margin-bottom: 4px;
   float: left;
   clear: both;
