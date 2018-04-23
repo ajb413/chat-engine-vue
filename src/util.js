@@ -15,13 +15,13 @@ function fourCharUUID() {
 }
 
 /**
- * Make an HTTP POST request.
+ * Make an HTTP POST request with an ES6 Promise.
  *
  * @param {String} url URL of the resource that is being requested.
  * @param {Object} options JSON Object with HTTP request options, "header"
  *     Object of possible headers to set, and a body Object of a POST body.
  *
- * @return {(Object|String)} An parsed JSON Object response or String response.
+ * @return {Promise} A parsed JSON Object response or String response.
  */
 function post(url, options) {
   return new Promise((resolve, reject) => {

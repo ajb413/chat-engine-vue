@@ -4,7 +4,7 @@ import util from './util';
 
 export default (ChatEngineHumanClient, bot, chatBotURL) => {
   // Create a ChatEngine instance for the ChatBot to correspond from
-  // by using the same connection info as the human's ChatEngine connection.
+  // by using the same connection info as the human's ChatEngine client.
   const ChatEngineBotClient = ChatEngineCore.create({
     publishKey: ChatEngineHumanClient.pnConfig.publishKey,
     subscribeKey: ChatEngineHumanClient.pnConfig.subscribeKey,
@@ -34,6 +34,7 @@ export default (ChatEngineHumanClient, bot, chatBotURL) => {
         if (payload.sender.uuid !== bot.uuid) {
           stephenBot.typingIndicator.startTyping();
 
+          // Make a request to PubNub Functions which contacts AWS Lex
           util.post(chatBotURL, {
             body: {
               data: {
@@ -48,6 +49,7 @@ export default (ChatEngineHumanClient, bot, chatBotURL) => {
             },
           }).then((res) => {
             stephenBot.typingIndicator.stopTyping();
+
             // ChatEngine publish Stephen ChatBot's reply made by Lex.
             stephenBot.emit('message', {
               text: res.lex_text,

@@ -38,7 +38,7 @@ export default {
         return;
       }
 
-      // Make a new chat key using the friend and user's UUID.
+      // Make a new chat key using the friend and client's UUID.
       let uuids = [this.friendUuid, this.$store.state.me.uuid].sort();
       let chatKey = uuids.join('-');
 
@@ -47,7 +47,7 @@ export default {
 
       newOneToOneChat.key = chatKey;
 
-      // Add the Typing Indicator ChatEngine plugin to this 1:1 chat.
+      // Add the Typing Indicator ChatEngine plugin to this private 1:1 chat.
       typingIndicator(newOneToOneChat);
 
       // Add this friend to the client's friend list
@@ -63,6 +63,7 @@ export default {
         chat: newOneToOneChat,
       });
 
+      // Clear the text input for adding a friend
       this.friendUuid = '';
     },
   },

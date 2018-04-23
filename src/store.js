@@ -77,9 +77,6 @@ const actions = {
 
 // getters are functions
 const getters = {
-  getCurrentChat(state) {
-    return state.currentChat;
-  },
   getMyUuid: (state) => state.me.uuid,
   getFriends: (state) => state.friends,
 };

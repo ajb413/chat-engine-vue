@@ -51,6 +51,11 @@ export default {
         return;
       }
 
+      // If the message body is empty, do not submit
+      if (event.target.value.length === 0) {
+        return;
+      }
+
       const state = this.$store.state;
       const currentChatObject = state.chats[state.currentChat];
 
@@ -59,26 +64,17 @@ export default {
         currentChatObject.typingIndicator.stopTyping();
       }
 
-      // Get text from textarea input
-      let text = event.target.value;
-
-      // Reset the text input
-      event.target.value = '';
-
-      // If the message body is empty, do not submit
-      if (text.length === 0) {
-        return;
-      }
-
-      let message = {
-        text,
-      };
-
+      // Send textarea input as message with ChatEngine
       // Use Vuex (in store.js) to send the message
       this.$store.dispatch('sendMessage', {
         chat: this.$store.state.currentChat, // a chat key
-        message,
+        message: {
+          text: event.target.value,
+        },
       });
+
+      // Reset the text input
+      event.target.value = '';
     },
   },
 };
@@ -92,8 +88,8 @@ export default {
 }
 
 textarea {
-  height: 28px;
   width: 98%;
+  height: 28px;
   padding: 0 5px;
   margin: 0;
   box-sizing: border-box;
