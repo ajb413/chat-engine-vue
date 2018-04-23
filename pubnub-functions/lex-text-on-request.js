@@ -1,6 +1,5 @@
 const vault = require('vault');
 const xhr = require('xhr');
-const base64Codec = require('codec/base64');
 
 /**
  * This is a REST (On Request) Event handler. Make a POST request here and Amazon Lex
@@ -177,8 +176,6 @@ export default (request, response) => {
       this.parsePath()
     
       var request = this.request, headers = request.headers, query
-
-      // var requestBody = JSON.parse(request.body);
       var requestBody = request.body;
 
       headers['X-Amz-Content-Sha256'] = 'UNSIGNED-PAYLOAD';
@@ -369,7 +366,12 @@ export default (request, response) => {
                 };
                 
                 signAWS(opts, { accessKeyId: AWS_access_key, secretAccessKey: AWS_secret_key });
-                const http_options = { 'method': 'POST', 'body': opts.body, 'headers': opts.headers };
+
+                const http_options = {
+                  'method': 'POST',
+                  'body': opts.body,
+                  'headers': opts.headers
+                };
 
                 opts.headers['Content-Type'] = contentType;
 
@@ -381,7 +383,9 @@ export default (request, response) => {
                         payload['lex_sound'] = ByteArrayToBase64(res['$buffer'].data);
                     } else {
                         const body = JSON.parse(res.body);
-                        lex["error"] = body['message'];
+                        payload['error'] = body['message'];
+                        response.status = 400;
+                        return response.send('Bad Request');
                     }
                     
                     response.status = 200;
