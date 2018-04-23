@@ -47,7 +47,7 @@ export default {
 <style scoped>
 .message-bubble {
   display: block;
-  max-width: 40%;
+  max-width: 50%;
   margin-bottom: 4px;
   float: left;
   clear: both;

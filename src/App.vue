@@ -5,7 +5,6 @@
 </template>
 
 <script>
-
 import ChatContainer from '@/components/ChatContainer';
 import ChatLog from '@/components/ChatLog';
 import FriendList from '@/components/FriendList';
@@ -36,4 +35,5 @@ body {
   color: #454d54;
   margin-top: 60px;
 }
+
 </style>

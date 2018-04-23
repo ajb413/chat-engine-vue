@@ -4,7 +4,8 @@
       ref="messageInput"
       placeholder="message..."
       maxlength="20000"
-      @keydown.enter="submit"
+      @keydown.enter="submitMessage"
+      @keyup="isTyping"
     ></textarea>
   </div>
 </template>
@@ -20,8 +21,10 @@ export default {
   created() {
     const thisComponent = this;
 
+    // Focus on the text input, and clear it, when a chat is selected
     EventBus.$on('focus-input', (event) => {
       thisComponent.$refs.messageInput.focus();
+      thisComponent.$refs.messageInput.value = '';
     });
 
     this.$nextTick(() => {
@@ -29,15 +32,38 @@ export default {
     });
   },
   methods: {
-    submit(e) {
-      if (!e.shiftKey) {
-        e.preventDefault();
+    isTyping(event) {
+      const state = this.$store.state;
+      const currentChatObject = state.chats[state.currentChat];
+
+      // Only display typing indicator in private 1:1 chats
+      if (currentChatObject.isPrivate &&
+          currentChatObject.typingIndicator &&
+          event.key !== 'Enter'
+      ) {
+        currentChatObject.typingIndicator.startTyping();
+      }
+    },
+    submitMessage(event) {
+      if (!event.shiftKey) {
+        event.preventDefault();
       } else {
         return;
       }
 
-      let text = e.target.value;
-      e.target.value = '';
+      const state = this.$store.state;
+      const currentChatObject = state.chats[state.currentChat];
+
+      // Only display typing indicator in private 1:1 chats
+      if (currentChatObject.isPrivate && currentChatObject.typingIndicator) {
+        currentChatObject.typingIndicator.stopTyping();
+      }
+
+      // Get text from textarea input
+      let text = event.target.value;
+
+      // Reset the text input
+      event.target.value = '';
 
       // If the message body is empty, do not submit
       if (text.length === 0) {
@@ -45,12 +71,12 @@ export default {
       }
 
       let message = {
-        time: new Date().getTime(),
         text,
       };
 
+      // Use Vuex (in store.js) to send the message
       this.$store.dispatch('sendMessage', {
-        chat: this.$store.state.currentChat,
+        chat: this.$store.state.currentChat, // a chat key
         message,
       });
     },

@@ -20,6 +20,7 @@
 <script>
 import {mapGetters} from 'vuex';
 import FriendListItem from '@/components/FriendListItem';
+import typingIndicator from '../typing-indicator';
 
 export default {
   name: 'friend-list',
@@ -40,9 +41,14 @@ export default {
       // Make a new chat key using the friend and user's UUID.
       let uuids = [this.friendUuid, this.$store.state.me.uuid].sort();
       let chatKey = uuids.join('-');
-      let newOneToOneChat = new this.$chatEngine.Chat(chatKey);
+
+      // Make a new 1:1 private chat
+      let newOneToOneChat = new this.$chatEngine.Chat(chatKey, true);
 
       newOneToOneChat.key = chatKey;
+
+      // Add the Typing Indicator ChatEngine plugin to this 1:1 chat.
+      typingIndicator(newOneToOneChat);
 
       // Add this friend to the client's friend list
       this.$store.commit('setFriends', {
