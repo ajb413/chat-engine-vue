@@ -1,7 +1,7 @@
 {
   "name": "pnchat",
   "version": "1.0.0",
-  "description": "A chat app with vue and PubNub Chat Engine.",
+  "description": "A chat app with Vue.js and PubNub ChatEngine.",
   "author": "Adam Bavosa",
   "private": true,
   "scripts": {
@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "chat-engine": "^0.9.10",
+    "chat-engine-typing-indicator": "0.0.9",
     "eslint-config-google": "^0.9.1",
+    "npm": "^5.8.0",
     "vue": "^2.5.2",
-    "vue-chat-engine": "0.0.3",
+    "vue-chat-engine": "0.0.5",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
