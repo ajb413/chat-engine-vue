@@ -1,7 +1,5 @@
 # PubNub ChatEngine + Vue + Amazon Lex
 
-> A chat app with vue and PubNub ChatEngine.
-
 Featured:
 - Integrate ChatEngine
 - Build ChatEngine plugin for Vue
