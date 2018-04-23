@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import {EventBus} from './event-bus.js';
 
 Vue.use(Vuex);
 
@@ -41,7 +42,7 @@ const mutations = {
     }
     state.chats[chat.key] = chat;
   },
-  CHATENGINE_message(state, {event, sender, chat, data}) {
+  CHATENGINE_message(state, {event, sender, chat, data, timetoken}) {
     let key = chat.key || chat.chat.key;
 
     if (!state.chatMessages[key]) {
@@ -50,6 +51,13 @@ const mutations = {
 
     let message = data;
     message.who = sender.uuid;
+    message.time = timetoken; // timetoken in ChatEngine 0.9.5 or later
+
+    // Force stop typing indicator
+    if (chat.typingIndicator && sender.name !== 'Me') {
+      // Handler in Chat Log Component (components/ChatLog.vue)
+      EventBus.$emit('typing-stop', chat.key);
+    }
 
     state.chatMessages[key].push(message);
     state.chatMessages[key].sort((msg1, msg2) => {
@@ -69,24 +77,9 @@ const actions = {
 
 // getters are functions
 const getters = {
-  getMessages(messages) {
-    if (!Array.isArray(messages)) {
-      return;
-    }
-
-    for (let message of messages) {
-      mutations.newMessage(null, {
-        message,
-      });
-    }
-  },
   getCurrentChat(state) {
     return state.currentChat;
   },
-  getMessages(state) {
-    return state.chatMessages[state.currentChat];
-  },
-  getChat: (state) => state.chats[state.currentChat],
   getMyUuid: (state) => state.me.uuid,
   getFriends: (state) => state.friends,
 };
