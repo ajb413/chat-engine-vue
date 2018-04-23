@@ -1,16 +1,28 @@
-# PubNub ChatEngine + Vue + AWS Cognitive
+# PubNub ChatEngine + Vue + Amazon Lex
 
 > A chat app with vue and PubNub ChatEngine.
 
-**LATEST: Currently constructing the front end**
-- ~~Integrate ChatEngine with test data~~
-- ~~Build ChatEngine plugin for Vue~~
-- ~~Architect and implement 1:1 chat~~
-- ~~Display the user's ID in the UI so they can make 1:1 chats with other users~~
-- ~~Add functionality for creating new chats~~
+Featured:
+- Integrate ChatEngine
+- Build ChatEngine plugin for Vue
+- Architect and implement 1:1 chat
+- Display the user's ID in the UI so they can make 1:1 chats with other users
+- Add functionality for creating new chats
 - Secure the 1:1 chats with PAM
 - Implement the [AWS Cognitive blocks](https://www.pubnub.com/blog/making-chat-apps-smarter-with-amazon-machine-learning-services/) from the [catalog](https://www.pubnub.com/docs/blocks-catalog)
-- Implement a ChatBot in the Demo
+- Implement a ChatBot in the Demo using Amazon Lex
+- ChatEngine Typing Indicator plugin in 1:1 chats
+
+## **To build your own you need PubNub Keys**
+Make a PubNub Account
+https://www.pubnub.com/register?devrel=chat-engine-vue
+
+Make a ChatEngine App in your PubNub Account
+https://www.pubnub.com/docs/tutorials/chatengine#step-one-pubnub-keys?devrel=chat-engine-vue
+
+Put keys in **main.js**
+
+For a ChatBot, make an Amazon Lex ChatBot, and a PubNub Function On Request handler using **pubnub-functions/lex-text-on-request.js** and add the URL to **main.js**
 
 ## Build Setup
 
