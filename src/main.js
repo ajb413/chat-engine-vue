@@ -18,11 +18,11 @@ store.commit('setFriends', {
 });
 
 // ChatBot REST endpoint powered by PubNub Functions and Amazon Lex
-const chatBotURL = '__PubNub_Function_Endpoint_For_Lex__';
+const chatBotURL = 'https://pubsub.pubnub.com/v1/blocks/sub-key/sub-c-eb9ac3fa-248e-11e8-bb29-5a43d096f02f/chat-bot';
 
 // Init ChatEngine with PubNub
-const pub = '__PubNub_Publish_Key__';
-const sub = '__PubNub_Subscribe_Key__';
+const pub = 'pub-c-bc85cb90-3bb6-4b48-9f2e-73e7a60a7be5';
+const sub = 'sub-c-eb9ac3fa-248e-11e8-bb29-5a43d096f02f';
 
 if (!pub || !sub) {
   console.error('ChatEngine: PubNub Keys are missing.');
@@ -62,6 +62,36 @@ function created() {
     let me = data.me;
     store.commit('setMe', {me});
 
+    // Auto add a 1:1 chat to UI when invited
+    me.direct.on('$.invite', (event) => {
+      let uuids = [event.sender.uuid, store.state.me.uuid].sort();
+      let chatKey = uuids.join('-');
+
+      // Don't make the same 1:1 chat if it already exists
+      if (store.state.chats[chatKey]) {
+        return;
+      }
+
+      let privateChat = new ChatEngine.Chat(chatKey, true);
+
+      privateChat.key = chatKey;
+
+      // Add the Typing Indicator ChatEngine plugin to this 1:1 chat.
+      typingIndicator(privateChat);
+
+      // Add this friend to the client's friend list
+      store.commit('setFriends', {
+        friends: [{
+          name: `Friend: ${event.sender.uuid}`,
+          chatKey,
+        }],
+      });
+
+      store.commit('newChat', {
+        chat: privateChat,
+      });
+    });
+
     ChatEngine.global.search({
       event: 'message',
       limit: 6,
@@ -89,29 +119,32 @@ function created() {
         botInit(ChatEngine, friend, chatBotURL);
       }
 
-      if (!store.state.chats[friend.chatKey]) {
-        // Create a new ChatEngine Chat, true for private chat
-        let myChat = new ChatEngine.Chat(friend.chatKey, true);
-
-        // Add the Typing Indicator ChatEngine plugin to this 1:1 chat.
-        typingIndicator(myChat);
-
-        // when a user comes online
-        myChat.on('$.online.*', (data) => {
-          console.log('New user', data.user.uuid);
-        });
-
-        // when a user goes offline
-        myChat.on('$.offline.*', (data) => {
-          console.log('User left', data.user.uuid);
-        });
-
-        myChat.key = friend.chatKey;
-
-        store.commit('newChat', {
-          chat: myChat,
-        });
+      // Don't make the same 1:1 chat if it already exists
+      if (store.state.chats[friend.chatKey]) {
+        return;
       }
+
+      // Create a new ChatEngine Chat, true for private chat
+      let myChat = new ChatEngine.Chat(friend.chatKey, true);
+
+      // Add the Typing Indicator ChatEngine plugin to this 1:1 chat.
+      typingIndicator(myChat);
+
+      // when a user comes online
+      myChat.on('$.online.*', (data) => {
+        console.log('New user', data.user.uuid);
+      });
+
+      // when a user goes offline
+      myChat.on('$.offline.*', (data) => {
+        console.log('User left', data.user.uuid);
+      });
+
+      myChat.key = friend.chatKey;
+
+      store.commit('newChat', {
+        chat: myChat,
+      });
     });
   });
 }

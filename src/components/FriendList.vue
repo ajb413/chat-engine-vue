@@ -42,10 +42,25 @@ export default {
       let uuids = [this.friendUuid, this.$store.state.me.uuid].sort();
       let chatKey = uuids.join('-');
 
+      // Don't make the same 1:1 chat if it already exists
+      if (this.$store.state.chats[chatKey]) {
+        this.friendUuid = '';
+        return;
+      }
+
       // Make a new 1:1 private chat
       let newOneToOneChat = new this.$chatEngine.Chat(chatKey, true);
 
       newOneToOneChat.key = chatKey;
+
+      // Automatically add this 1:1 chat to the other user's Client and UI
+      if (this.friendUuid &&
+          newOneToOneChat &&
+          newOneToOneChat.chatEngine.users[this.friendUuid]
+      ) {
+        const user = newOneToOneChat.chatEngine.users[this.friendUuid];
+        newOneToOneChat.invite(user);
+      }
 
       // Add the Typing Indicator ChatEngine plugin to this private 1:1 chat.
       typingIndicator(newOneToOneChat);
