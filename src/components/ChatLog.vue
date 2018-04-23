@@ -52,7 +52,6 @@ export default {
 
     // Add a typing indicator visual to the UI
     EventBus.$on('typing-start', (chatKey) => {
-      console.log(this.$store.state.currentChat, chatKey);
       if (this.$store.state.currentChat === chatKey) {
         thisComponent.showTypingIndicator = true;
         this.$nextTick(scrollBottom);
@@ -61,7 +60,6 @@ export default {
 
     // Remove the typing indicator visual from the UI
     EventBus.$on('typing-stop', (chatKey) => {
-      console.log(this.$store.state.currentChat, chatKey);
       if (this.$store.state.currentChat === chatKey) {
         thisComponent.showTypingIndicator = false;
       }
