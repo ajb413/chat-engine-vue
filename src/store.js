@@ -24,11 +24,6 @@ const mutations = {
       state.friends.push(friend);
     }
   },
-  updateFriendChatKey(state, {friendIndex, chatKey}) {
-    let obj = state.friends[friendIndex];
-    obj.chatKey = chatKey;
-    Vue.set(state.friends, friendIndex, obj);
-  },
   newChat(state, {chat}) {
     if (!chat.key) {
       throw Error('No chat.key defined on the new Chatengine chat Object');

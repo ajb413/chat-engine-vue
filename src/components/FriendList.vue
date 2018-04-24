@@ -19,8 +19,8 @@
 
 <script>
 import {mapGetters} from 'vuex';
+import util from '../util';
 import FriendListItem from '@/components/FriendListItem';
-import typingIndicator from '../typing-indicator';
 
 export default {
   name: 'friend-list',
@@ -38,7 +38,7 @@ export default {
         return;
       }
 
-      // Make a new chat key using the friend and client's UUID.
+      // Make a new chat key using the friend and client's ID.
       let uuids = [this.friendUuid, this.$store.state.me.uuid].sort();
       let chatKey = uuids.join('-');
 
@@ -48,35 +48,27 @@ export default {
         return;
       }
 
-      // Make a new 1:1 private chat
-      let newOneToOneChat = new this.$chatEngine.Chat(chatKey, true);
-
-      newOneToOneChat.key = chatKey;
-
-      // Automatically add this 1:1 chat to the other user's Client and UI
-      if (this.friendUuid &&
-          newOneToOneChat &&
-          newOneToOneChat.chatEngine.users[this.friendUuid]
-      ) {
-        const user = newOneToOneChat.chatEngine.users[this.friendUuid];
-        newOneToOneChat.invite(user);
-      }
-
-      // Add the Typing Indicator ChatEngine plugin to this private 1:1 chat.
-      typingIndicator(newOneToOneChat);
-
-      // Add this friend to the client's friend list
-      this.$store.commit('setFriends', {
-        friends: [{
-          name: `Friend: ${this.friendUuid}`,
+      // Make the new 1:1 private Chat
+      util.newChatEngineChat(
+        this.$store,
+        this.$chatEngine,
+        {
           chatKey,
-        }],
-      });
+          uuid: this.friendUuid,
+        },
+        true,
+      );
 
-      // Add this chat to the global state
-      this.$store.commit('newChat', {
-        chat: newOneToOneChat,
-      });
+      // // Automatically add this 1:1 chat to the other user's Client and UI
+      // // Be sure to declare `newOneToOneChat` above
+      // // More invite code in (main.js).
+      // if (this.friendUuid &&
+      //     newOneToOneChat &&
+      //     newOneToOneChat.chatEngine.users[this.friendUuid]
+      // ) {
+      //   const user = newOneToOneChat.chatEngine.users[this.friendUuid];
+      //   newOneToOneChat.invite(user);
+      // }
 
       // Clear the text input for adding a friend
       this.friendUuid = '';

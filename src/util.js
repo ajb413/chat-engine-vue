@@ -1,3 +1,6 @@
+import typingIndicator from 'chat-engine-typing-indicator';
+import {EventBus} from './event-bus.js';
+
 /**
  * Get a new UUID.
  * @return {string} A 4 character UUID for PubNub and to give to friends.
@@ -56,7 +59,80 @@ function post(url, options) {
   });
 }
 
+/**
+ * Adds the ChatEngine Typing indicator plugin and initializes the events
+ *     that update the UI via the Vue Event Bus.
+ *
+ * @param {Object} chat Chat object to add the typing indicator to.
+ */
+function _addTypingIndicator(chat) {
+  chat.plugin(typingIndicator({
+    timeout: 2000, // MS after final keyup when stopTyping fires
+  }));
+
+  chat.on('$typingIndicator.startTyping', (event) => {
+    const chat = event.chat;
+    const me = event.sender.name === 'Me' ? true : false;
+
+    // Only fire the UI changing event if the sender is not Me.
+    if (!me) {
+      // Handler in Chat Log Component (components/ChatLog.vue)
+      EventBus.$emit('typing-start', chat.key);
+    }
+  });
+
+  chat.on('$typingIndicator.stopTyping', (event) => {
+    const chat = event.chat;
+    const me = event.sender.name === 'Me' ? true : false;
+
+    // Only fire the UI changing event if the sender is not Me.
+    if (!me) {
+      // Handler in Chat Log Component (components/ChatLog.vue)
+      EventBus.$emit('typing-stop', chat.key);
+    }
+  });
+}
+
+/**
+ * Makes a new private ChatEngine chat and adds it to the global Vuex store.
+ *
+ * @param {Object} store Global Vuex store object.
+ * @param {Object} chatEngine ChatEngine Client Object.
+ * @param {String} friend Friend settings like avatar, chatKey, name.
+ * @param {Boolean} private_ True will make the Chat a private Chat.
+ *
+ * @return {Object} Chat object that was initialized and added to the store.
+ */
+function newChatEngineChat(store, chatEngine, friend, private_) {
+  // Make a new 1:1 private chat (true param means private).
+  const newChat = new chatEngine.Chat(friend.chatKey, private_);
+
+  // Add the key to the Chat object for Vue UI use
+  newChat.key = friend.chatKey;
+
+  // Add the Typing Indicator ChatEngine plugin to this private 1:1 chat.
+  _addTypingIndicator(newChat);
+
+  // If there is no name, make one with the UUID
+  if (!friend.name) {
+    friend.name = `Friend: ${friend.uuid}`;
+  }
+
+  // Add this friend to the client's friend list
+  store.commit('setFriends', {
+    friends: [friend],
+  });
+
+  // Add this chat to the global state
+  store.commit('newChat', {
+    chat: newChat,
+  });
+
+  return newChat;
+}
+
 export default {
   fourCharUUID,
   post,
+  newChatEngineChat,
 };
