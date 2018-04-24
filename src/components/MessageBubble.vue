@@ -26,6 +26,7 @@ export default {
         result = true;
       }
 
+      // Don't show the name above the message bubble if the chat is 1:1
       return result ? '' : 'display-none';
     },
     me() {
@@ -35,6 +36,7 @@ export default {
         result = true;
       }
 
+      // Render the message bubble on the right side if it is from this client
       return result ? 'me' : '';
     },
   },

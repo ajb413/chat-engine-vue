@@ -36,10 +36,10 @@ export default {
       const state = this.$store.state;
       const currentChatObject = state.chats[state.currentChat];
 
-      // Only display typing indicator in private 1:1 chats
-      if (currentChatObject.isPrivate &&
-          currentChatObject.typingIndicator &&
-          event.key !== 'Enter'
+      // Trigger the typing indicator start
+      if (
+        currentChatObject.typingIndicator &&
+        event.key !== 'Enter'
       ) {
         currentChatObject.typingIndicator.startTyping();
       }

@@ -27,7 +27,8 @@ import MessageBubble from '@/components/MessageBubble';
 import {EventBus} from '../event-bus.js';
 
 /**
- * Auto scrolls the chat log to the bottom when a new message is received.
+ * Auto scrolls the chat log to the bottom when a new message is received or if
+ *     the typing indicator's "typing-start" event fires.
  */
 function scrollBottom() {
   this.$el.scrollTo(0, this.$el.scrollHeight);

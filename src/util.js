@@ -2,10 +2,13 @@ import typingIndicator from 'chat-engine-typing-indicator';
 import {EventBus} from './event-bus.js';
 
 /**
- * Get a new UUID.
- * @return {string} A 4 character UUID for PubNub and to give to friends.
+ * Get a new 4 character ID. This is used in the ChatEngine User configuration
+ *     as the 'uuid' property. It is recommended to use a standard 128-bit UUID
+ *     in production apps instead.
+ *
+ * @return {string} A unique ID for ChatEngine, and to give to friends.
  */
-function fourCharUUID() {
+function fourCharID() {
   const maxLength = 4;
   const possible = 'abcdef0123456789';
   let text = '';
@@ -18,13 +21,15 @@ function fourCharUUID() {
 }
 
 /**
- * Make an HTTP POST request with an ES6 Promise.
+ * Make an HTTP POST request wrapped in an ES6 Promise.
  *
  * @param {String} url URL of the resource that is being requested.
  * @param {Object} options JSON Object with HTTP request options, "header"
  *     Object of possible headers to set, and a body Object of a POST body.
  *
- * @return {Promise} A parsed JSON Object response or String response.
+ * @return {Promise} Resolves a parsed JSON Object or String response text if
+ *     the response code is in the 200 range. Rejects with responce status text
+ *     when the response code is outside of the 200 range.
  */
 function post(url, options) {
   return new Promise((resolve, reject) => {
@@ -40,7 +45,7 @@ function post(url, options) {
     }
 
     xhr.onload = function() {
-      if (xhr.status === 200) {
+      if (xhr.status >= 200 && xhr.status < 300 ) {
         let response;
 
         try {
@@ -50,7 +55,7 @@ function post(url, options) {
         }
 
         resolve(response);
-      } else if (xhr.status !== 200) {
+      } else {
         reject(xhr.statusText);
       }
     };
@@ -74,7 +79,7 @@ function _addTypingIndicator(chat) {
     const chat = event.chat;
     const me = event.sender.name === 'Me' ? true : false;
 
-    // Only fire the UI changing event if the sender is not Me.
+    // Only fire the UI changing event if the sender is not Me
     if (!me) {
       // Handler in Chat Log Component (components/ChatLog.vue)
       EventBus.$emit('typing-start', chat.key);
@@ -85,7 +90,7 @@ function _addTypingIndicator(chat) {
     const chat = event.chat;
     const me = event.sender.name === 'Me' ? true : false;
 
-    // Only fire the UI changing event if the sender is not Me.
+    // Only fire the UI changing event if the sender is not Me
     if (!me) {
       // Handler in Chat Log Component (components/ChatLog.vue)
       EventBus.$emit('typing-stop', chat.key);
@@ -94,24 +99,26 @@ function _addTypingIndicator(chat) {
 }
 
 /**
- * Makes a new private ChatEngine chat and adds it to the global Vuex store.
+ * Makes a new, private ChatEngine Chat and adds it to the global Vuex store.
  *
  * @param {Object} store Global Vuex store object.
- * @param {Object} chatEngine ChatEngine Client Object.
- * @param {String} friend Friend settings like avatar, chatKey, name.
+ * @param {Object} chatEngine ChatEngine client.
+ * @param {Object} friend Friend settings like avatar, chatKey, name.
  * @param {Boolean} private_ True will make the Chat a private Chat.
  *
  * @return {Object} Chat object that was initialized and added to the store.
  */
 function newChatEngineChat(store, chatEngine, friend, private_) {
-  // Make a new 1:1 private chat (true param means private).
+  // Make a new 1:1 private chat.
   const newChat = new chatEngine.Chat(friend.chatKey, private_);
 
   // Add the key to the Chat object for Vue UI use
   newChat.key = friend.chatKey;
 
-  // Add the Typing Indicator ChatEngine plugin to this private 1:1 chat.
-  _addTypingIndicator(newChat);
+  // Add the Typing Indicator ChatEngine plugin to private 1:1 chats
+  if (private_) {
+    _addTypingIndicator(newChat);
+  }
 
   // If there is no name, make one with the UUID
   if (!friend.name) {
@@ -132,7 +139,7 @@ function newChatEngineChat(store, chatEngine, friend, private_) {
 }
 
 export default {
-  fourCharUUID,
+  fourCharID,
   post,
   newChatEngineChat,
 };

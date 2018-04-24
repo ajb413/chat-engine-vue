@@ -41,7 +41,7 @@ const mutations = {
     message.who = sender.uuid;
     message.time = timetoken; // timetoken in ChatEngine 0.9.5 or later
 
-    // Force stop typing indicator
+    // Force stop the typing indicator
     if (chat.typingIndicator && sender.name !== 'Me') {
       // Handler in Chat Log Component (components/ChatLog.vue)
       EventBus.$emit('typing-stop', chat.key);

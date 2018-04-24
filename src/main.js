@@ -32,17 +32,17 @@ const chatEngine = ChatEngineCore.create({
   globalChannel: globalChatSettings.chatKey,
 });
 
-const myUuid = util.fourCharUUID();
+const myUuid = util.fourCharID();
 const me = {
   name: myUuid,
   uuid: myUuid,
 };
 
-// ChatEngine injected into every component instance
+// ChatEngine injected into every component instance with the plugin
 Vue.use(VueChatEngine, {chatEngine, store});
 
 /**
- * Execute this function when the Vue instance is created.
+ * Execute this function when the Vue instance is created
  */
 function created() {
   const ChatEngine = this.$chatEngine;
@@ -91,7 +91,7 @@ function created() {
       globalChatSettings,
     );
 
-    // Get the previous messages in the global chat
+    // Get the message history in the global chat
     globalChat.search({
       event: 'message',
       limit: 6,
@@ -106,7 +106,7 @@ function created() {
       const uuids = [friend.uuid, store.state.me.uuid].sort();
       const chatKey = uuids.join('-');
 
-      // Don't make the same 1:1 chat if it already exists
+      // Don't make a duplicate chat if it already exists
       if (
         store.state.chats[chatKey] ||
         friend.uuid === 'global'
@@ -116,11 +116,11 @@ function created() {
 
       // Make a private chat key with the Stephen bot
       if (friend.isChatBot) {
-        // Init ChatBot with its own ChatEngine Client (bot.js)
+        // Init ChatBot with its own ChatEngine client (bot.js)
         botInit(ChatEngine, friend, chatBotURL);
       }
 
-      // Add the chat key to the Chat Object for Vue UI use
+      // Add the chat key to the Chat object for Vue UI use
       friend.chatKey = chatKey;
 
       // Make the new 1:1 private Chat
