@@ -49,8 +49,7 @@ export default {
       }
 
       // Make the new 1:1 private Chat (can be set to a variable for invite use)
-      // const newOneToOneChat = util.newChatEngineChat(
-      util.newChatEngineChat(
+      const newOneToOneChat = util.newChatEngineChat(
         this.$store,
         this.$chatEngine,
         {
@@ -60,16 +59,17 @@ export default {
         true,
       );
 
-      // // Automatically add this 1:1 chat to the other user's Client and UI
-      // // Be sure to set variable `newOneToOneChat` above
-      // // More invite code in (main.js)
-      // if (this.friendUuid &&
-      //     newOneToOneChat &&
-      //     newOneToOneChat.chatEngine.users[this.friendUuid]
-      // ) {
-      //   const user = newOneToOneChat.chatEngine.users[this.friendUuid];
-      //   newOneToOneChat.invite(user);
-      // }
+      // Automatically add this 1:1 chat to the other user's Client and UI
+      // Be sure to set variable `newOneToOneChat` above
+      // More invite code in (main.js)
+      if (
+        this.friendUuid &&
+        newOneToOneChat &&
+        newOneToOneChat.chatEngine.users[this.friendUuid]
+      ) {
+        const user = newOneToOneChat.chatEngine.users[this.friendUuid];
+        newOneToOneChat.invite(user);
+      }
 
       // Clear the text input for adding a friend
       this.friendUuid = '';

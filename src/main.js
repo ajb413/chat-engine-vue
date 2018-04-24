@@ -59,28 +59,28 @@ function created() {
     let me = data.me;
     store.commit('setMe', {me});
 
-    // // Auto add a 1:1 chat to UI when invited
-    // // more invite code in (components/FriendList.vue)
-    // me.direct.on('$.invite', (event) => {
-    //   let uuids = [event.sender.uuid, store.state.me.uuid].sort();
-    //   let chatKey = uuids.join('-');
+    // Auto add a 1:1 chat to UI when invited
+    // more invite code in (components/FriendList.vue)
+    me.direct.on('$.invite', (event) => {
+      let uuids = [event.sender.uuid, store.state.me.uuid].sort();
+      let chatKey = uuids.join('-');
 
-    //   // Don't make the same 1:1 chat if it already exists
-    //   if (store.state.chats[chatKey]) {
-    //     return;
-    //   }
+      // Don't make the same 1:1 chat if it already exists
+      if (store.state.chats[chatKey]) {
+        return;
+      }
 
-    //   // Make the new 1:1 private Chat
-    //   util.newChatEngineChat(
-    //     store,
-    //     ChatEngine,
-    //     {
-    //       chatKey,
-    //       uuid: event.sender.uuid,
-    //     },
-    //     true,
-    //   );
-    // });
+      // Make the new 1:1 private Chat
+      util.newChatEngineChat(
+        store,
+        ChatEngine,
+        {
+          chatKey,
+          uuid: event.sender.uuid,
+        },
+        true,
+      );
+    });
 
     ChatEngine.global.key = globalChatSettings.chatKey;
 
