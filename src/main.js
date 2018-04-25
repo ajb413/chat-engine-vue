@@ -15,11 +15,11 @@ Vue.config.productionTip = false;
 const globalChatSettings = DefaultChats.friends[0];
 
 // ChatBot REST endpoint powered by PubNub Functions and Amazon Lex
-const chatBotURL = 'https://pubsub.pubnub.com/v1/blocks/sub-key/sub-c-eb9ac3fa-248e-11e8-bb29-5a43d096f02f/chat-bot';
+const chatBotURL = '__PubNub_Function_Endpoint_For_Lex__';
 
 // Init ChatEngine with PubNub
-const pub = 'pub-c-bc85cb90-3bb6-4b48-9f2e-73e7a60a7be5';
-const sub = 'sub-c-eb9ac3fa-248e-11e8-bb29-5a43d096f02f';
+const pub = '__PubNub_Publish_Key__';
+const sub = '__PubNub_Subscribe_Key__';
 
 if (!pub || !sub) {
   console.error('ChatEngine: PubNub Keys are missing.');
