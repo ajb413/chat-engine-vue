@@ -6,17 +6,11 @@
 
 <script>
 import ChatContainer from '@/components/ChatContainer';
-import ChatLog from '@/components/ChatLog';
-import FriendList from '@/components/FriendList';
-import MessageInput from '@/components/MessageInput';
 
 export default {
   name: 'App',
   components: {
     ChatContainer,
-    ChatLog,
-    FriendList,
-    MessageInput,
   },
 };
 
