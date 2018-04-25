@@ -18,16 +18,16 @@ const globalChatSettings = DefaultChats.friends[0];
 const chatBotURL = '__PubNub_Function_Endpoint_For_Lex__';
 
 // Init ChatEngine with PubNub
-const pub = '__PubNub_Publish_Key__';
-const sub = '__PubNub_Subscribe_Key__';
+const publishKey = '__PubNub_Publish_Key__';
+const subscribeKey = '__PubNub_Subscribe_Key__';
 
-if (!pub || !sub) {
+if (!publishKey || !subscribeKey) {
   console.error('ChatEngine: PubNub Keys are missing.');
 }
 
 const chatEngine = ChatEngineCore.create({
-  publishKey: pub,
-  subscribeKey: sub,
+  publishKey,
+  subscribeKey,
 }, {
   globalChannel: globalChatSettings.chatKey,
 });
