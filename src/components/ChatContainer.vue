@@ -30,7 +30,6 @@ export default {
   },
   data() {
     return {
-      msg: 'Welcome to Your Vue.js App',
       title: 'PubNub ChatEngine and Vue - User: ',
     };
   },
