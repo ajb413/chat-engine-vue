@@ -15,11 +15,11 @@ Vue.config.productionTip = false;
 const globalChatSettings = DefaultChats.friends[0];
 
 // ChatBot REST endpoint powered by PubNub Functions and Amazon Lex
-const chatBotURL = '__PubNub_Function_Endpoint_For_Lex__';
+const chatBotURL = '__Your_PubNub_Function_Endpoint_For_Lex__';
 
 // Init ChatEngine with PubNub
-const publishKey = '__PubNub_Publish_Key__';
-const subscribeKey = '__PubNub_Subscribe_Key__';
+const publishKey = '__Your_PubNub_Publish_Key__';
+const subscribeKey = '__Your_PubNub_Subscribe_Key__';
 
 if (!publishKey || !subscribeKey) {
   console.error('ChatEngine: PubNub Keys are missing.');
