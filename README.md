@@ -1,5 +1,8 @@
 # PubNub ChatEngine + Vue + Amazon Lex
 
+Tutorial for Development on PubNub:
+[![pubnub blog](https://i.imgur.com/VHbsEnd.png)](https://www.pubnub.com/tutorials/chatengine/vuejs/chat-app/?devrel_gh=chat-engine-vue)
+
 Featured:
 - Integrate ChatEngine
 - Build ChatEngine plugin for Vue
@@ -13,10 +16,10 @@ Featured:
 
 ## **To build your own you need PubNub Keys**
 Make a PubNub Account
-https://www.pubnub.com/register?devrel=chat-engine-vue
+https://www.pubnub.com/register?devrel_gh=chat-engine-vue
 
 Make a ChatEngine App in your PubNub Account
-https://www.pubnub.com/docs/tutorials/chatengine#step-one-pubnub-keys?devrel=chat-engine-vue
+https://www.pubnub.com/docs/tutorials/chatengine#step-one-pubnub-keys?devrel_gh=chat-engine-vue
 
 Put keys in **main.js**
 
