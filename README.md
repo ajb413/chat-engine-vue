@@ -1,6 +1,6 @@
 # PubNub ChatEngine + Vue + Amazon Lex
 
-Tutorial for Development on PubNub click here:
+**Tutorial for Development on PubNub click here:**
 
 [![pubnub blog](https://i.imgur.com/VHbsEnd.png)](https://www.pubnub.com/tutorials/chatengine/vuejs/chat-app/?devrel_gh=chat-engine-vue)
 
