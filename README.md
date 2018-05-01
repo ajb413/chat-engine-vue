@@ -4,6 +4,10 @@
 
 [![pubnub blog](https://i.imgur.com/VHbsEnd.png)](https://www.pubnub.com/tutorials/chatengine/vuejs/chat-app/?devrel_gh=chat-engine-vue)
 
+**Live demo:**
+
+https://ajb413.github.io/chatengine-vue-chatbot-1to1/
+
 Featured:
 - Integrate ChatEngine
 - Build ChatEngine plugin for Vue
