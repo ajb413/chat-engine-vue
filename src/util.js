@@ -102,20 +102,26 @@ function fourCharID() {
  *     Object of possible headers to set, and a body Object of a POST body.
  *
  * @return {Promise} Resolves a parsed JSON Object or String response text if
- *     the response code is in the 200 range. Rejects with responce status text
+ *     the response code is in the 200 range. Rejects with response status text
  *     when the response code is outside of the 200 range.
  */
 function post(url, options) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
+    let contentTypeIsSet = false;
 
     xhr.open('POST', url);
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
     for (let header in options.headers) {
       if ({}.hasOwnProperty.call(options.headers, header)) {
+        header = header.toLowerCase();
+        contentTypeIsSet = header === 'content-type' ? true : contentTypeIsSet;
         xhr.setRequestHeader(header, options.headers[header]);
       }
+    }
+
+    if (!contentTypeIsSet) {
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     }
 
     xhr.onload = function() {
